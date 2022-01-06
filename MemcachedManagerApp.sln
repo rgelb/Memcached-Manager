@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemcachedManager.UI", "MemcachedManagerUI\MemcachedManager.UI.csproj", "{BB7E624B-768F-4F18-9226-BC5009683ADD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemcachedManager.DB", "MemcachedManagerData\MemcachedManager.DB.csproj", "{3944589A-17A7-4A0D-B1C4-A622122AE660}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemcachedManager.Entities", "MemcachedManager.Entities\MemcachedManager.Entities.csproj", "{C34E563A-27A7-418A-95C3-57F182A368D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8CB7A2B6-246A-40C8-9A9F-EE5F2EFF94A0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB7E624B-768F-4F18-9226-BC5009683ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB7E624B-768F-4F18-9226-BC5009683ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB7E624B-768F-4F18-9226-BC5009683ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB7E624B-768F-4F18-9226-BC5009683ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3944589A-17A7-4A0D-B1C4-A622122AE660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3944589A-17A7-4A0D-B1C4-A622122AE660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3944589A-17A7-4A0D-B1C4-A622122AE660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3944589A-17A7-4A0D-B1C4-A622122AE660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C34E563A-27A7-418A-95C3-57F182A368D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C34E563A-27A7-418A-95C3-57F182A368D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C34E563A-27A7-418A-95C3-57F182A368D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C34E563A-27A7-418A-95C3-57F182A368D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D13B6DAD-63B2-44FC-9E75-D00A55FFE2E8}
+	EndGlobalSection
+EndGlobal
