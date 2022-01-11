@@ -47,13 +47,6 @@ public partial class frmMain : Form {
         DisplayContentControl(ContentType.None);
     }
 
-    private void InitializeMiscUI() {
-        NativeMethods.SetToolstripTextBoxPlaceHolder(txtSearchByKey, "Search By Key");
-
-        // force a resize of status bar
-        appStatusBar_Resize(appStatusBar, EventArgs.Empty);
-    }
-
     private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
         SaveUserSettings();
     }
@@ -308,6 +301,13 @@ public partial class frmMain : Form {
         PopulateConnections();
     }
 
+    private void InitializeMiscUI() {
+        NativeMethods.SetToolstripTextBoxPlaceHolder(txtSearchByKey, "Search By Key");
+
+        // force a resize of status bar
+        appStatusBar_Resize(appStatusBar, EventArgs.Empty);
+    }
+
     private void InitializeTextEditor() {
         var txtContent = new Scintilla();
         appContainer.Panel2.Controls.Add(txtContent);
@@ -509,8 +509,5 @@ public partial class frmMain : Form {
     }
 
     #endregion
-
-
-
 
 }
