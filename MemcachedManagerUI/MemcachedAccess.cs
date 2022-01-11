@@ -98,6 +98,14 @@ public class MemcachedAccess {
         return cacheDumpResults.ToString();
     }
 
+    public object GetByKey(string key) {
+        return client.Get(key);
+    }
+
+    public void SetByKey(string key, string value, int cacheInSeconds) {
+        client.Set(key, value, cacheInSeconds);
+    }
+
     protected virtual void OnProgress(ProgressEventArgs e) {
         EventHandler<ProgressEventArgs> handler = Progress;
         if (handler != null) {

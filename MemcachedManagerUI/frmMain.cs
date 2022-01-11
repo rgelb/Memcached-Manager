@@ -2,6 +2,7 @@ using MemcachedManager.Entities.Models;
 using MemcachedManager.Entities.Settings;
 using MemcachedManager.UI.Common;
 using MemcachedManager.UI.Controls;
+using MemcachedManager.UI.Forms;
 using MemcachedManagerDB.Data;
 using MemcachedManagerDB.Setup;
 using Microsoft.Extensions.Configuration;
@@ -41,8 +42,16 @@ public partial class frmMain : Form {
         InitializeTextEditor();
         InitializeData();
         InitializeUI();
+        InitializeMiscUI();
         InitializeUserSettings();
         DisplayContentControl(ContentType.None);
+    }
+
+    private void InitializeMiscUI() {
+        NativeMethods.SetToolstripTextBoxPlaceHolder(txtSearchByKey, "Search By Key");
+
+        // force a resize of status bar
+        appStatusBar_Resize(appStatusBar, EventArgs.Empty);
     }
 
     private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
@@ -77,13 +86,13 @@ public partial class frmMain : Form {
             return;
         }
 
-        if (e.Node.Tag is Server) {
+        if (e.Node.Tag is Server server) {
             MemcachedAccess access = new(connection);
 
             try {
                 Cursor.Current = Cursors.WaitCursor;
-                MemcachedServerStats stats = access.Stats((Server)e.Node.Tag);
-                PopulateStatsGrid(stats);
+                MemcachedServerStats stats = access.Stats(server);
+                PopulateGrid(stats);
                 DisplayContentControl(ContentType.Grid);
 
             } finally {
@@ -93,12 +102,12 @@ public partial class frmMain : Form {
         }
     }
 
-    private void toolBtnManageConnections_Click(object sender, EventArgs e) {
+    private void btnManageConnections_Click(object sender, EventArgs e) {
         // bring up the manager for connections
 
     }
 
-    private void toolBtnFlush_Click(object sender, EventArgs e) {
+    private void btnFlush_Click(object sender, EventArgs e) {
         Connection connection = this.CurrentConnection;
         if (connection == null) {
             MessageBox.Show("Connection is not selected!");
@@ -120,7 +129,7 @@ public partial class frmMain : Form {
         }
     }
 
-    private void toolBtnItemsStats_Click(object sender, EventArgs e) {
+    private void btnItemsStats_Click(object sender, EventArgs e) {
         Connection connection = this.CurrentConnection;
         if (connection == null) {
             MessageBox.Show("Connection is not selected!");
@@ -139,7 +148,7 @@ public partial class frmMain : Form {
             Cursor.Current = Cursors.WaitCursor;
             string results = access.StatItems(server);
 
-            this.textEditor.Editor.Text = results;
+            PopulateTextEditor(results);
             DisplayContentControl(ContentType.TextEditor);
 
         } finally {
@@ -147,7 +156,7 @@ public partial class frmMain : Form {
         }
     }
 
-    private void toolBtnCacheDump_Click(object sender, EventArgs e) {
+    private void btnCacheDump_Click(object sender, EventArgs e) {
         Connection connection = this.CurrentConnection;
         if (connection == null) {
             MessageBox.Show("Connection is not selected!");
@@ -183,7 +192,7 @@ public partial class frmMain : Form {
             string cacheDumpResults = access.CacheDump(server, slabs, token);
 
             this.Invoke((MethodInvoker)delegate {
-                this.textEditor.Editor.Text = cacheDumpResults;
+                PopulateTextEditor(cacheDumpResults);
                 DisplayContentControl(ContentType.TextEditor);
 
                 ToggleCancellableUIVisibility(false);
@@ -195,7 +204,7 @@ public partial class frmMain : Form {
 
     }
 
-    private void toolBtnCancelOperation_Click(object sender, EventArgs e) {
+    private void btnCancelOperation_Click(object sender, EventArgs e) {
         appCancellationTokenSource.Cancel();
     }
 
@@ -203,6 +212,39 @@ public partial class frmMain : Form {
         this.Invoke((MethodInvoker)delegate {
             toolAppProgressBar.Value = e.Percent;
         });
+    }
+
+    private void appStatusBar_Resize(object sender, EventArgs e) {
+        toolAppProgressBar.Width = appStatusBar.Width - lblAppStatus.Width - 25;
+    }
+
+    private void btnSearchByKey_Click(object sender, EventArgs e) {
+        SearchByKey();
+    }
+
+    private void txtSearchByKey_DoubleClick(object sender, EventArgs e) {
+        txtSearchByKey.Clear();
+    }
+
+    private void txtSearchByKey_KeyDown(object sender, KeyEventArgs e) {
+        if (e.KeyCode == Keys.Enter) {
+            SearchByKey();
+        }
+    }
+
+    private void btnNewKey_Click(object sender, EventArgs e) {
+        Connection connection = this.CurrentConnection;
+        if (connection == null) {
+            MessageBox.Show("Connection is not selected!");
+            return;
+        }
+
+        var form = new frmNewKey();
+        DialogResult dialogResult = form.ShowDialog();
+        if (dialogResult == DialogResult.OK) {
+            MemcachedAccess access = new(connection);
+            access.SetByKey(form.KeyName, form.KeyValue, form.CacheInSeconds);
+        }
     }
 
     #endregion
@@ -311,8 +353,7 @@ public partial class frmMain : Form {
         }
     }
 
-    private void PopulateStatsGrid(MemcachedServerStats stats) {
-
+    private void PopulateGrid(MemcachedServerStats stats) {
         grdEntities.AutoGenerateColumns = true;
         grdEntities.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
@@ -322,7 +363,30 @@ public partial class frmMain : Form {
         // set order of columns
         grdEntities.Columns["Name"].DisplayIndex = 0;
         grdEntities.Columns["Value"].DisplayIndex = 1;
+    }
 
+    private void PopulateGrid(byte[] data) {
+        // convert byte array to List<StatPair> for convinience so that user can see the index as well
+        var listItems = new List<StatPair>();
+        int index = 0;
+        foreach (var item in data) {
+            index++;
+            listItems.Add(new StatPair(index.ToString(), item.ToString()));
+        }
+
+        grdEntities.AutoGenerateColumns = true;
+        grdEntities.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+        grdEntities.DataSource = listItems;
+
+        // set order of columns
+        grdEntities.Columns["Name"].HeaderText = "Index";
+        grdEntities.Columns["Value"].DisplayIndex = 1;
+        grdEntities.Columns["Notes"].Visible = false;
+    }
+
+    private void PopulateTextEditor(string text) {
+        this.textEditor.Editor.Text = text;
     }
 
     private void DisplayContentControl(ContentType contentType) {
@@ -355,23 +419,25 @@ public partial class frmMain : Form {
     }
 
     private void ToggleCancellableUIVisibility(bool toggle) {
-        toolBtnCancelOperation.Visible = toggle;
+        btnCancelOperation.Visible = toggle;
         toolAppProgressBar.Visible = toggle;
     }
 
     private void ToggleUIEnabled(bool toggle) {
         cboConnections.Enabled = toggle;
-        toolButtonManageConnections.Enabled = toggle;
-        toolBtnCacheDump.Enabled = toggle;
-        toolBtnFlush.Enabled = toggle;
-        toolBtnItemsStats.Enabled = toggle;
+        btnManageConnections.Enabled = toggle;
+        btnCacheDump.Enabled = toggle;
+        btnFlush.Enabled = toggle;
+        btnItemStats.Enabled = toggle;
+        btnSearchByKey.Enabled = toggle;
+        txtSearchByKey.Enabled = toggle;
+        btnNewKey.Enabled = toggle;
         appContainer.Enabled = toggle;
     }
 
-    private List<int> StatItemsToSlabs(string results) {
+    private static List<int> StatItemsToSlabs(string results) {
         List<int> slabs = new();
         List<string> lines = results.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
 
         foreach (string line in lines) {
             string[] elements = line.Split(':');
@@ -387,6 +453,45 @@ public partial class frmMain : Form {
         return slabs;
     }
 
+    private void SearchByKey() {
+        Connection connection = this.CurrentConnection;
+        if (connection == null) {
+            MessageBox.Show("Connection is not selected!");
+            return;
+        }
+
+        string searchKey = txtSearchByKey.Text.Trim();
+        if (string.IsNullOrEmpty(searchKey)) {
+            MessageBox.Show("Enter a key to search by");
+            return;
+        }
+
+        MemcachedAccess access = new(connection);
+
+        try {
+            Cursor.Current = Cursors.WaitCursor;
+            object obj = access.GetByKey(searchKey);
+
+            if (obj == null) {
+                PopulateTextEditor("Not Found");
+                DisplayContentControl(ContentType.TextEditor);
+                return;
+            }
+
+            if (obj is byte[] data) {
+                PopulateGrid(data);
+                DisplayContentControl(ContentType.Grid);
+            } else if (obj is string str) {
+                PopulateTextEditor(str);
+                DisplayContentControl(ContentType.TextEditor);
+            } else {
+                PopulateTextEditor($"Type: {obj.GetType().FullName} \n\r{obj}");
+                DisplayContentControl(ContentType.TextEditor);
+            }
+        } finally {
+            Cursor.Current = Cursors.Default;
+        }
+    }
     #endregion
 
     #region Properties
@@ -404,5 +509,8 @@ public partial class frmMain : Form {
     }
 
     #endregion
+
+
+
 
 }

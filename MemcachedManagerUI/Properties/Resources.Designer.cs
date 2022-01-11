@@ -59,5 +59,15 @@ namespace MemcachedManager.UI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_search_298865 {
+            get {
+                object obj = ResourceManager.GetObject("if_search_298865", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

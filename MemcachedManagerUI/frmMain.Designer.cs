@@ -26,7 +26,7 @@ partial class frmMain {
     private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.treeServers = new System.Windows.Forms.TreeView();
-            this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblAppStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.appStatusBar = new System.Windows.Forms.StatusStrip();
             this.toolAppProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -39,16 +39,19 @@ partial class frmMain {
             this.grdEntities = new System.Windows.Forms.DataGridView();
             this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.btnNewKey = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cboConnections = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolBtnItemsStats = new System.Windows.Forms.ToolStripButton();
+            this.btnItemStats = new System.Windows.Forms.ToolStripButton();
             this.appToolbar = new System.Windows.Forms.ToolStrip();
-            this.toolButtonManageConnections = new System.Windows.Forms.ToolStripButton();
-            this.toolBtnFlush = new System.Windows.Forms.ToolStripButton();
-            this.toolBtnCacheDump = new System.Windows.Forms.ToolStripButton();
-            this.toolBtnCancelOperation = new System.Windows.Forms.ToolStripButton();
+            this.btnManageConnections = new System.Windows.Forms.ToolStripButton();
+            this.btnFlush = new System.Windows.Forms.ToolStripButton();
+            this.btnCacheDump = new System.Windows.Forms.ToolStripButton();
+            this.btnCancelOperation = new System.Windows.Forms.ToolStripButton();
+            this.txtSearchByKey = new System.Windows.Forms.ToolStripTextBox();
+            this.btnSearchByKey = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.appStatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appContainer)).BeginInit();
             this.appContainer.Panel1.SuspendLayout();
@@ -69,17 +72,17 @@ partial class frmMain {
             this.treeServers.TabIndex = 0;
             this.treeServers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeServers_AfterSelect);
             // 
-            // toolStripStatus
+            // lblAppStatus
             // 
-            this.toolStripStatus.Name = "toolStripStatus";
-            this.toolStripStatus.Size = new System.Drawing.Size(26, 17);
-            this.toolStripStatus.Text = "Idle";
+            this.lblAppStatus.Name = "lblAppStatus";
+            this.lblAppStatus.Size = new System.Drawing.Size(26, 17);
+            this.lblAppStatus.Text = "Idle";
             // 
             // appStatusBar
             // 
             this.appStatusBar.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.appStatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatus,
+            this.lblAppStatus,
             this.toolAppProgressBar});
             this.appStatusBar.Location = new System.Drawing.Point(0, 700);
             this.appStatusBar.Name = "appStatusBar";
@@ -87,11 +90,14 @@ partial class frmMain {
             this.appStatusBar.Size = new System.Drawing.Size(1137, 22);
             this.appStatusBar.TabIndex = 6;
             this.appStatusBar.Text = "Idle";
+            this.appStatusBar.Resize += new System.EventHandler(this.appStatusBar_Resize);
             // 
             // toolAppProgressBar
             // 
+            this.toolAppProgressBar.AutoSize = false;
             this.toolAppProgressBar.Name = "toolAppProgressBar";
-            this.toolAppProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.toolAppProgressBar.Size = new System.Drawing.Size(500, 16);
+            this.toolAppProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.toolAppProgressBar.Visible = false;
             // 
             // helpToolStripButton
@@ -144,7 +150,6 @@ partial class frmMain {
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 27);
-            this.toolStripSeparator6.Visible = false;
             // 
             // appContainer
             // 
@@ -193,14 +198,14 @@ partial class frmMain {
             this.openToolStripButton.Text = "&Open";
             this.openToolStripButton.Visible = false;
             // 
-            // newToolStripButton
+            // btnNewKey
             // 
-            this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
-            this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(55, 24);
-            this.newToolStripButton.Text = "&New";
-            this.newToolStripButton.Visible = false;
+            this.btnNewKey.Image = ((System.Drawing.Image)(resources.GetObject("btnNewKey.Image")));
+            this.btnNewKey.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnNewKey.Name = "btnNewKey";
+            this.btnNewKey.Size = new System.Drawing.Size(86, 24);
+            this.btnNewKey.Text = "&New Key...";
+            this.btnNewKey.Click += new System.EventHandler(this.btnNewKey_Click);
             // 
             // toolStripSeparator2
             // 
@@ -220,14 +225,14 @@ partial class frmMain {
             this.toolStripLabel2.Size = new System.Drawing.Size(103, 24);
             this.toolStripLabel2.Text = "Select Connection";
             // 
-            // toolBtnItemsStats
+            // btnItemStats
             // 
-            this.toolBtnItemsStats.Image = ((System.Drawing.Image)(resources.GetObject("toolBtnItemsStats.Image")));
-            this.toolBtnItemsStats.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolBtnItemsStats.Name = "toolBtnItemsStats";
-            this.toolBtnItemsStats.Size = new System.Drawing.Size(83, 24);
-            this.toolBtnItemsStats.Text = "&Item Stats";
-            this.toolBtnItemsStats.Click += new System.EventHandler(this.toolBtnItemsStats_Click);
+            this.btnItemStats.Image = ((System.Drawing.Image)(resources.GetObject("btnItemStats.Image")));
+            this.btnItemStats.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnItemStats.Name = "btnItemStats";
+            this.btnItemStats.Size = new System.Drawing.Size(83, 24);
+            this.btnItemStats.Text = "&Item Stats";
+            this.btnItemStats.Click += new System.EventHandler(this.btnItemsStats_Click);
             // 
             // appToolbar
             // 
@@ -235,14 +240,17 @@ partial class frmMain {
             this.appToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel2,
             this.cboConnections,
-            this.toolButtonManageConnections,
+            this.btnManageConnections,
             this.toolStripSeparator2,
-            this.toolBtnFlush,
-            this.toolBtnItemsStats,
-            this.toolBtnCacheDump,
-            this.toolBtnCancelOperation,
+            this.btnFlush,
+            this.btnItemStats,
+            this.btnCacheDump,
+            this.btnCancelOperation,
             this.toolStripSeparator6,
-            this.newToolStripButton,
+            this.txtSearchByKey,
+            this.btnSearchByKey,
+            this.toolStripSeparator1,
+            this.btnNewKey,
             this.openToolStripButton,
             this.printToolStripButton,
             this.cutToolStripButton,
@@ -256,43 +264,65 @@ partial class frmMain {
             this.appToolbar.TabIndex = 5;
             this.appToolbar.Text = "toolStrip1";
             // 
-            // toolButtonManageConnections
+            // btnManageConnections
             // 
-            this.toolButtonManageConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolButtonManageConnections.Image = ((System.Drawing.Image)(resources.GetObject("toolButtonManageConnections.Image")));
-            this.toolButtonManageConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolButtonManageConnections.Name = "toolButtonManageConnections";
-            this.toolButtonManageConnections.Size = new System.Drawing.Size(23, 24);
-            this.toolButtonManageConnections.Text = "...";
-            this.toolButtonManageConnections.Click += new System.EventHandler(this.toolBtnManageConnections_Click);
+            this.btnManageConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnManageConnections.Image = ((System.Drawing.Image)(resources.GetObject("btnManageConnections.Image")));
+            this.btnManageConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnManageConnections.Name = "btnManageConnections";
+            this.btnManageConnections.Size = new System.Drawing.Size(23, 24);
+            this.btnManageConnections.Text = "...";
+            this.btnManageConnections.Click += new System.EventHandler(this.btnManageConnections_Click);
             // 
-            // toolBtnFlush
+            // btnFlush
             // 
-            this.toolBtnFlush.Image = ((System.Drawing.Image)(resources.GetObject("toolBtnFlush.Image")));
-            this.toolBtnFlush.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolBtnFlush.Name = "toolBtnFlush";
-            this.toolBtnFlush.Size = new System.Drawing.Size(68, 24);
-            this.toolBtnFlush.Text = "Flush...";
-            this.toolBtnFlush.Click += new System.EventHandler(this.toolBtnFlush_Click);
+            this.btnFlush.Image = ((System.Drawing.Image)(resources.GetObject("btnFlush.Image")));
+            this.btnFlush.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFlush.Name = "btnFlush";
+            this.btnFlush.Size = new System.Drawing.Size(68, 24);
+            this.btnFlush.Text = "Flush...";
+            this.btnFlush.Click += new System.EventHandler(this.btnFlush_Click);
             // 
-            // toolBtnCacheDump
+            // btnCacheDump
             // 
-            this.toolBtnCacheDump.Image = ((System.Drawing.Image)(resources.GetObject("toolBtnCacheDump.Image")));
-            this.toolBtnCacheDump.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolBtnCacheDump.Name = "toolBtnCacheDump";
-            this.toolBtnCacheDump.Size = new System.Drawing.Size(100, 24);
-            this.toolBtnCacheDump.Text = "Cache Dump";
-            this.toolBtnCacheDump.Click += new System.EventHandler(this.toolBtnCacheDump_Click);
+            this.btnCacheDump.Image = ((System.Drawing.Image)(resources.GetObject("btnCacheDump.Image")));
+            this.btnCacheDump.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCacheDump.Name = "btnCacheDump";
+            this.btnCacheDump.Size = new System.Drawing.Size(100, 24);
+            this.btnCacheDump.Text = "Cache Dump";
+            this.btnCacheDump.Click += new System.EventHandler(this.btnCacheDump_Click);
             // 
-            // toolBtnCancelOperation
+            // btnCancelOperation
             // 
-            this.toolBtnCancelOperation.Image = ((System.Drawing.Image)(resources.GetObject("toolBtnCancelOperation.Image")));
-            this.toolBtnCancelOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolBtnCancelOperation.Name = "toolBtnCancelOperation";
-            this.toolBtnCancelOperation.Size = new System.Drawing.Size(123, 24);
-            this.toolBtnCancelOperation.Text = "Cancel Operation";
-            this.toolBtnCancelOperation.Visible = false;
-            this.toolBtnCancelOperation.Click += new System.EventHandler(this.toolBtnCancelOperation_Click);
+            this.btnCancelOperation.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelOperation.Image")));
+            this.btnCancelOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCancelOperation.Name = "btnCancelOperation";
+            this.btnCancelOperation.Size = new System.Drawing.Size(123, 24);
+            this.btnCancelOperation.Text = "Cancel Operation";
+            this.btnCancelOperation.Visible = false;
+            this.btnCancelOperation.Click += new System.EventHandler(this.btnCancelOperation_Click);
+            // 
+            // txtSearchByKey
+            // 
+            this.txtSearchByKey.Name = "txtSearchByKey";
+            this.txtSearchByKey.Size = new System.Drawing.Size(200, 27);
+            this.txtSearchByKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchByKey_KeyDown);
+            this.txtSearchByKey.DoubleClick += new System.EventHandler(this.txtSearchByKey_DoubleClick);
+            // 
+            // btnSearchByKey
+            // 
+            this.btnSearchByKey.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSearchByKey.Image = global::MemcachedManager.UI.Properties.Resources.if_search_298865;
+            this.btnSearchByKey.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSearchByKey.Name = "btnSearchByKey";
+            this.btnSearchByKey.Size = new System.Drawing.Size(24, 24);
+            this.btnSearchByKey.Text = "toolStripButton1";
+            this.btnSearchByKey.Click += new System.EventHandler(this.btnSearchByKey_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // frmMain
             // 
@@ -324,7 +354,7 @@ partial class frmMain {
     #endregion
 
     private TreeView treeServers;
-    private ToolStripStatusLabel toolStripStatus;
+    private ToolStripStatusLabel lblAppStatus;
     private StatusStrip appStatusBar;
     private ToolStripButton helpToolStripButton;
     private ToolStripSeparator toolStripSeparator7;
@@ -335,16 +365,19 @@ partial class frmMain {
     private SplitContainer appContainer;
     private ToolStripButton printToolStripButton;
     private ToolStripButton openToolStripButton;
-    private ToolStripButton newToolStripButton;
+    private ToolStripButton btnNewKey;
     private ToolStripSeparator toolStripSeparator2;
     private ToolStripComboBox cboConnections;
     private ToolStripLabel toolStripLabel2;
-    private ToolStripButton toolBtnItemsStats;
+    private ToolStripButton btnItemStats;
     private ToolStrip appToolbar;
     private DataGridView grdEntities;
-    private ToolStripButton toolButtonManageConnections;
-    private ToolStripButton toolBtnFlush;
-    private ToolStripButton toolBtnCacheDump;
-    private ToolStripButton toolBtnCancelOperation;
+    private ToolStripButton btnManageConnections;
+    private ToolStripButton btnFlush;
+    private ToolStripButton btnCacheDump;
+    private ToolStripButton btnCancelOperation;
     private ToolStripProgressBar toolAppProgressBar;
+    private ToolStripTextBox txtSearchByKey;
+    private ToolStripButton btnSearchByKey;
+    private ToolStripSeparator toolStripSeparator1;
 }
