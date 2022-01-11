@@ -19,8 +19,6 @@ public class Bootstrap {
     }
 
     public void BuildDb() {
-
-
         using var connection = new SqliteConnection(connectionString);
 
         // Memcached Connections Table
