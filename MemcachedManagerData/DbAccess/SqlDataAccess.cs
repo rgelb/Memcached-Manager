@@ -7,7 +7,7 @@ namespace MemcachedManagerDB.DbAccess;
 
 internal class SqlDataAccess {
 
-    private string connectionString;
+    private readonly string connectionString;
 
     public SqlDataAccess(string connectionString) {
         this.connectionString = connectionString;

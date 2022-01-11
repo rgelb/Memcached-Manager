@@ -107,10 +107,7 @@ public class MemcachedAccess {
     }
 
     protected virtual void OnProgress(ProgressEventArgs e) {
-        EventHandler<ProgressEventArgs> handler = Progress;
-        if (handler != null) {
-            handler(this, e);
-        }
+        Progress?.Invoke(this, e);
     }
 }
 
@@ -165,7 +162,7 @@ public class StatPair {
 
     private static DateTime UnixTimeStampToDateTime(double unixTimeStamp) {
         // Unix timestamp is seconds past epoch
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        DateTime dateTime = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
         return dateTime;
     }
@@ -176,7 +173,7 @@ public class StatPair {
         int order = 0;
         while (len >= 1024 && order < sizes.Length - 1) {
             order++;
-            len = len / 1024;
+            len /= 1024;
         }
 
         // Adjust the format string to your preferences. For example "{0:0.#}{1}" would

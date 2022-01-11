@@ -96,7 +96,13 @@ public partial class frmMain : Form {
     }
 
     private void btnManageConnections_Click(object sender, EventArgs e) {
-        // bring up the manager for connections
+        frmConnectionList frm = new();
+        frm.ConnectionStrings = this.connectionStrings;
+        frm.ShowDialog();
+
+        if (frm.Changed) {
+            PopulateConnections();
+        }
 
     }
 
@@ -343,6 +349,8 @@ public partial class frmMain : Form {
     #region Private Methods
 
     private void PopulateConnections() {
+        cboConnections.Items.Clear();
+
         var appConnections = new AppConnection(connectionStrings.AppDb).GetAll();
 
         cboConnections.ComboBox.ValueMember = "ConnectionId";

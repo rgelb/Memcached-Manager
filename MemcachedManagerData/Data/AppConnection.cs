@@ -19,30 +19,26 @@ public class AppConnection {
 
 		var lookup = new Dictionary<int, Connection>();
 
-		using (var conn = new SqliteConnection(connectionString)) {
-			var result = conn.Query<Connection, Server, Connection>
-			(
-				splitOn: "ConnectionId",
-				
-				sql: @"select c.Name, c.ConnectionId, s.ConnectionId, s.Address, s.Port
+        using var conn = new SqliteConnection(connectionString);
+        var result = conn.Query<Connection, Server, Connection>
+        (
+            splitOn: "ConnectionId",
+
+            sql: @"select c.Name, c.ConnectionId, s.ConnectionId, s.Address, s.Port
 					from Connections c
 					join Servers s on c.ConnectionId = s.ConnectionId",
 
-				map: (parent, child) => {
+            map: (parent, child) => {
+                if (!lookup.TryGetValue(parent.ConnectionId, out Connection memcachedConnection)) {
+                    lookup.Add(parent.ConnectionId, memcachedConnection = parent);
+                }
+                memcachedConnection.Servers.Add(child);
+                return memcachedConnection;
+            }
 
-					Connection memcachedConnection;
+        );
 
-					if (!lookup.TryGetValue(parent.ConnectionId, out memcachedConnection)) {
-						lookup.Add(parent.ConnectionId, memcachedConnection = parent);
-                    }
-					memcachedConnection.Servers.Add(child);
-					return memcachedConnection;
-				}
-				
-			);
-
-			return lookup.Values;
-        }
+        return lookup.Values;
 
     }
 
