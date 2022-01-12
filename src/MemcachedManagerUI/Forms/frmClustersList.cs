@@ -23,7 +23,6 @@ public partial class frmClustersList : Form {
             appConnection.Save(frm.Cluster);
 
             PopulateClusters();
-
             Changed = true;
         }
     }
@@ -47,7 +46,6 @@ public partial class frmClustersList : Form {
             appConnection.Save(frm.Cluster);
 
             PopulateClusters();
-
             Changed = true;
         }
     }
@@ -64,6 +62,7 @@ public partial class frmClustersList : Form {
             AppConnection appConnection = new(ConnectionStrings.AppDb);
             appConnection.DeleteCluster(selectedCluster);
 
+            PopulateClusters();
             Changed = true;
         }
     }

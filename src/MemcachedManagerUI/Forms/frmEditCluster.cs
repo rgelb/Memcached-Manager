@@ -3,6 +3,9 @@
 namespace MemcachedManager.UI.Forms;
 
 public partial class frmEditCluster : Form {
+
+    private const int COL_DELETE = 2;
+
     public frmEditCluster() {
         InitializeComponent();
     }
@@ -37,6 +40,12 @@ public partial class frmEditCluster : Form {
     private void frmEditCluster_FormClosing(object sender, FormClosingEventArgs e) {
         if (this.DialogResult == DialogResult.None) {
             e.Cancel = true;
+        }
+    }
+
+    private void dgvServers_CellContentClick(object sender, DataGridViewCellEventArgs e) {
+        if (e.ColumnIndex == COL_DELETE) {
+            dgvServers.Rows.RemoveAt(e.RowIndex);
         }
     }
 }

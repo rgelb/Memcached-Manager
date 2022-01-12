@@ -272,6 +272,7 @@ partial class frmMain {
             this.btnManageClusters.Name = "btnManageClusters";
             this.btnManageClusters.Size = new System.Drawing.Size(23, 24);
             this.btnManageClusters.Text = "...";
+            this.btnManageClusters.ToolTipText = "Manage Clusters";
             this.btnManageClusters.Click += new System.EventHandler(this.btnManageClusters_Click);
             // 
             // btnFlush

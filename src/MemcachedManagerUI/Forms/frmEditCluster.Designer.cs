@@ -107,6 +107,7 @@ partial class frmEditCluster {
             this.dgvServers.RowTemplate.Height = 25;
             this.dgvServers.Size = new System.Drawing.Size(411, 311);
             this.dgvServers.TabIndex = 1;
+            this.dgvServers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvServers_CellContentClick);
             // 
             // addressDataGridViewTextBoxColumn
             // 
