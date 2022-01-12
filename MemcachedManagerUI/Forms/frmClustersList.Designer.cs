@@ -1,6 +1,6 @@
 ﻿namespace MemcachedManager.UI.Forms;
 
-partial class frmConnectionList {
+partial class frmClustersList {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -24,9 +24,9 @@ partial class frmConnectionList {
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConnectionList));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmClustersList));
             this.btnClose = new System.Windows.Forms.Button();
-            this.lvConnections = new System.Windows.Forms.ListView();
+            this.lvClusters = new System.Windows.Forms.ListView();
             this.colName = new System.Windows.Forms.ColumnHeader();
             this.colDetails = new System.Windows.Forms.ColumnHeader();
             this.btnAddNew = new System.Windows.Forms.Button();
@@ -45,21 +45,22 @@ partial class frmConnectionList {
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // lvConnections
+            // lvClusters
             // 
-            this.lvConnections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvClusters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvConnections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvClusters.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colName,
             this.colDetails});
-            this.lvConnections.FullRowSelect = true;
-            this.lvConnections.Location = new System.Drawing.Point(17, 17);
-            this.lvConnections.Name = "lvConnections";
-            this.lvConnections.Size = new System.Drawing.Size(546, 394);
-            this.lvConnections.TabIndex = 1;
-            this.lvConnections.UseCompatibleStateImageBehavior = false;
-            this.lvConnections.View = System.Windows.Forms.View.Details;
+            this.lvClusters.FullRowSelect = true;
+            this.lvClusters.Location = new System.Drawing.Point(17, 17);
+            this.lvClusters.MultiSelect = false;
+            this.lvClusters.Name = "lvClusters";
+            this.lvClusters.Size = new System.Drawing.Size(546, 394);
+            this.lvClusters.TabIndex = 1;
+            this.lvClusters.UseCompatibleStateImageBehavior = false;
+            this.lvClusters.View = System.Windows.Forms.View.Details;
             // 
             // colName
             // 
@@ -104,7 +105,7 @@ partial class frmConnectionList {
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // frmConnectionList
+            // frmClustersList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -112,12 +113,12 @@ partial class frmConnectionList {
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnAddNew);
-            this.Controls.Add(this.lvConnections);
+            this.Controls.Add(this.lvClusters);
             this.Controls.Add(this.btnClose);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "frmConnectionList";
+            this.Name = "frmClustersList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Connection List";
+            this.Text = "Clusters";
             this.Load += new System.EventHandler(this.frmConnectionList_Load);
             this.ResumeLayout(false);
 
@@ -126,7 +127,7 @@ partial class frmConnectionList {
     #endregion
 
     private Button btnClose;
-    private ListView lvConnections;
+    private ListView lvClusters;
     private Button btnAddNew;
     private Button btnEdit;
     private Button btnDelete;

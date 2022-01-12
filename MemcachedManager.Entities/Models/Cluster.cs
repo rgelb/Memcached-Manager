@@ -1,15 +1,10 @@
 ﻿using Dapper.Contrib.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MemcachedManager.Entities.Models;
 
-public class Connection {
+public class Cluster {
     [Key]
-    public int ConnectionId { get; set; }
+    public int ClusterId { get; set; }
     public string Name { get; set; } = string.Empty;
 
     [Write(false)]

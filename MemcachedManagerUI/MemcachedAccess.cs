@@ -12,25 +12,25 @@ namespace MemcachedManager.UI;
 public class MemcachedAccess {
 
     private readonly MemcachedClient client;
-    private readonly Entities.Models.Connection connection;
+    private readonly Entities.Models.Cluster cluster;
 
     public event EventHandler<ProgressEventArgs> Progress;
 
-    public MemcachedAccess(Entities.Models.Connection connection) {
+    public MemcachedAccess(Entities.Models.Cluster cluster) {
         var loggerFactory = new Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory();
         var configuration = new MemcachedClientConfiguration(loggerFactory, new MemcachedClientOptions {
-            Servers = connection.Servers.Select(s => new Server { Address = s.Address, Port = s.Port }).ToList()
+            Servers = cluster.Servers.Select(s => new Server { Address = s.Address, Port = s.Port }).ToList()
         });
 
         this.client = new MemcachedClient(loggerFactory, configuration);
-        this.connection = connection;
+        this.cluster = cluster;
     }
 
     public List<MemcachedServerStats>  Stats() {
 
         List<MemcachedServerStats> stats = new();
 
-        foreach (var server in connection.Servers) {
+        foreach (var server in cluster.Servers) {
             stats.Add(this.Stats(server));
         }
 

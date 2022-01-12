@@ -18,6 +18,11 @@ internal class SqlDataAccess {
         return await connection.GetAsync<T>(Id);
     }
 
+    public int Execute(string sql) {
+        using IDbConnection connection = new SqliteConnection(connectionString);
+        return connection.Execute(sql);
+    }
+
     public async Task<IEnumerable<T>> GetAll<T>() where T : class {
         using IDbConnection connection = new SqliteConnection(connectionString);
         return await connection.GetAllAsync<T>();

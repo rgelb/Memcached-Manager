@@ -41,11 +41,11 @@ partial class frmMain {
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.btnNewKey = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.cboConnections = new System.Windows.Forms.ToolStripComboBox();
+            this.cboClusters = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.btnItemStats = new System.Windows.Forms.ToolStripButton();
             this.appToolbar = new System.Windows.Forms.ToolStrip();
-            this.btnManageConnections = new System.Windows.Forms.ToolStripButton();
+            this.btnManageClusters = new System.Windows.Forms.ToolStripButton();
             this.btnFlush = new System.Windows.Forms.ToolStripButton();
             this.btnCacheDump = new System.Windows.Forms.ToolStripButton();
             this.btnCancelOperation = new System.Windows.Forms.ToolStripButton();
@@ -212,18 +212,18 @@ partial class frmMain {
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
             // 
-            // cboConnections
+            // cboClusters
             // 
-            this.cboConnections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboConnections.Name = "cboConnections";
-            this.cboConnections.Size = new System.Drawing.Size(106, 27);
-            this.cboConnections.SelectedIndexChanged += new System.EventHandler(this.cboConnections_SelectedIndexChanged);
+            this.cboClusters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboClusters.Name = "cboClusters";
+            this.cboClusters.Size = new System.Drawing.Size(106, 27);
+            this.cboClusters.SelectedIndexChanged += new System.EventHandler(this.cboClusters_SelectedIndexChanged);
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(103, 24);
-            this.toolStripLabel2.Text = "Select Connection";
+            this.toolStripLabel2.Size = new System.Drawing.Size(78, 24);
+            this.toolStripLabel2.Text = "Select Cluster";
             // 
             // btnItemStats
             // 
@@ -239,8 +239,8 @@ partial class frmMain {
             this.appToolbar.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.appToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel2,
-            this.cboConnections,
-            this.btnManageConnections,
+            this.cboClusters,
+            this.btnManageClusters,
             this.toolStripSeparator2,
             this.btnFlush,
             this.btnItemStats,
@@ -264,15 +264,15 @@ partial class frmMain {
             this.appToolbar.TabIndex = 5;
             this.appToolbar.Text = "toolStrip1";
             // 
-            // btnManageConnections
+            // btnManageClusters
             // 
-            this.btnManageConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnManageConnections.Image = ((System.Drawing.Image)(resources.GetObject("btnManageConnections.Image")));
-            this.btnManageConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnManageConnections.Name = "btnManageConnections";
-            this.btnManageConnections.Size = new System.Drawing.Size(23, 24);
-            this.btnManageConnections.Text = "...";
-            this.btnManageConnections.Click += new System.EventHandler(this.btnManageConnections_Click);
+            this.btnManageClusters.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnManageClusters.Image = ((System.Drawing.Image)(resources.GetObject("btnManageClusters.Image")));
+            this.btnManageClusters.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnManageClusters.Name = "btnManageClusters";
+            this.btnManageClusters.Size = new System.Drawing.Size(23, 24);
+            this.btnManageClusters.Text = "...";
+            this.btnManageClusters.Click += new System.EventHandler(this.btnManageClusters_Click);
             // 
             // btnFlush
             // 
@@ -367,12 +367,12 @@ partial class frmMain {
     private ToolStripButton openToolStripButton;
     private ToolStripButton btnNewKey;
     private ToolStripSeparator toolStripSeparator2;
-    private ToolStripComboBox cboConnections;
+    private ToolStripComboBox cboClusters;
     private ToolStripLabel toolStripLabel2;
     private ToolStripButton btnItemStats;
     private ToolStrip appToolbar;
     private DataGridView grdEntities;
-    private ToolStripButton btnManageConnections;
+    private ToolStripButton btnManageClusters;
     private ToolStripButton btnFlush;
     private ToolStripButton btnCacheDump;
     private ToolStripButton btnCancelOperation;

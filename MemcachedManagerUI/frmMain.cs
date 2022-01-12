@@ -51,9 +51,9 @@ public partial class frmMain : Form {
         SaveUserSettings();
     }
 
-    private void cboConnections_SelectedIndexChanged(object sender, EventArgs e) {
-        if (cboConnections.SelectedItem is not Connection connection) {
-            MessageBox.Show("Connection is not selected!");
+    private void cboClusters_SelectedIndexChanged(object sender, EventArgs e) {
+        if (cboClusters.SelectedItem is not Cluster cluster) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
@@ -64,7 +64,7 @@ public partial class frmMain : Form {
         var parentNode = treeServers.Nodes.Add("Servers");
 
         // load servers
-        foreach (var server in connection.Servers) {
+        foreach (var server in cluster.Servers) {
             var node = parentNode.Nodes.Add($"{server.Address}:{server.Port}");
             node.Tag = server;
             node.EnsureVisible();
@@ -73,14 +73,14 @@ public partial class frmMain : Form {
 
     private void treeServers_AfterSelect(object sender, TreeViewEventArgs e) {
 
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
         if (e.Node.Tag is Server server) {
-            MemcachedAccess access = new(connection);
+            MemcachedAccess access = new(cluster);
 
             try {
                 Cursor.Current = Cursors.WaitCursor;
@@ -95,21 +95,21 @@ public partial class frmMain : Form {
         }
     }
 
-    private void btnManageConnections_Click(object sender, EventArgs e) {
-        frmConnectionList frm = new();
+    private void btnManageClusters_Click(object sender, EventArgs e) {
+        frmClustersList frm = new();
         frm.ConnectionStrings = this.connectionStrings;
         frm.ShowDialog();
 
         if (frm.Changed) {
-            PopulateConnections();
+            PopulateClusters();
         }
 
     }
 
     private void btnFlush_Click(object sender, EventArgs e) {
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
@@ -117,7 +117,7 @@ public partial class frmMain : Form {
                                 "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
         if (dialogResult == DialogResult.OK) {
-            MemcachedAccess access = new(connection);
+            MemcachedAccess access = new(cluster);
 
             try {
                 Cursor.Current = Cursors.WaitCursor;
@@ -129,9 +129,9 @@ public partial class frmMain : Form {
     }
 
     private void btnItemsStats_Click(object sender, EventArgs e) {
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
@@ -141,7 +141,7 @@ public partial class frmMain : Form {
             return;
         }
 
-        MemcachedAccess access = new(connection);
+        MemcachedAccess access = new(cluster);
 
         try {
             Cursor.Current = Cursors.WaitCursor;
@@ -156,9 +156,9 @@ public partial class frmMain : Form {
     }
 
     private void btnCacheDump_Click(object sender, EventArgs e) {
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
@@ -170,7 +170,7 @@ public partial class frmMain : Form {
 
         this.Cursor = Cursors.AppStarting;
 
-        MemcachedAccess access = new(connection);
+        MemcachedAccess access = new(cluster);
         string statItemsResults = access.StatItems(server);
         List<int> slabs = StatItemsToSlabs(statItemsResults);
 
@@ -232,16 +232,16 @@ public partial class frmMain : Form {
     }
 
     private void btnNewKey_Click(object sender, EventArgs e) {
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
         var form = new frmNewKey();
         DialogResult dialogResult = form.ShowDialog();
         if (dialogResult == DialogResult.OK) {
-            MemcachedAccess access = new(connection);
+            MemcachedAccess access = new(cluster);
             access.SetByKey(form.KeyName, form.KeyValue, form.CacheInSeconds);
         }
     }
@@ -272,14 +272,14 @@ public partial class frmMain : Form {
         }
 
 
-        if (Properties.Settings.Default.LastConnection.Length > 0) {
-            cboConnections.Text = Properties.Settings.Default.LastConnection;
+        if (Properties.Settings.Default.LastCluster.Length > 0) {
+            cboClusters.Text = Properties.Settings.Default.LastCluster;
         }
 
     }
 
     private void SaveUserSettings() {
-        Properties.Settings.Default.LastConnection = cboConnections.Text;
+        Properties.Settings.Default.LastCluster = cboClusters.Text;
         Properties.Settings.Default.WindowState = (int)this.WindowState;
 
         switch (this.WindowState) {
@@ -304,7 +304,7 @@ public partial class frmMain : Form {
 
     #region Initialization
     private void InitializeUI() {
-        PopulateConnections();
+        PopulateClusters();
     }
 
     private void InitializeMiscUI() {
@@ -348,16 +348,16 @@ public partial class frmMain : Form {
 
     #region Private Methods
 
-    private void PopulateConnections() {
-        cboConnections.Items.Clear();
+    private void PopulateClusters() {
+        cboClusters.Items.Clear();
 
-        var appConnections = new AppConnection(connectionStrings.AppDb).GetAll();
+        var clusters = new AppConnection(connectionStrings.AppDb).GetAll();
 
-        cboConnections.ComboBox.ValueMember = "ConnectionId";
-        cboConnections.ComboBox.DisplayMember = "Name";
+        cboClusters.ComboBox.ValueMember = "ClusterId";
+        cboClusters.ComboBox.DisplayMember = "Name";
 
-        foreach (var item in appConnections) {
-            cboConnections.Items.Add(item);
+        foreach (var cluster in clusters) {
+            cboClusters.Items.Add(cluster);
         }
     }
 
@@ -432,8 +432,8 @@ public partial class frmMain : Form {
     }
 
     private void ToggleUIEnabled(bool toggle) {
-        cboConnections.Enabled = toggle;
-        btnManageConnections.Enabled = toggle;
+        cboClusters.Enabled = toggle;
+        btnManageClusters.Enabled = toggle;
         btnCacheDump.Enabled = toggle;
         btnFlush.Enabled = toggle;
         btnItemStats.Enabled = toggle;
@@ -462,9 +462,9 @@ public partial class frmMain : Form {
     }
 
     private void SearchByKey() {
-        Connection connection = this.CurrentConnection;
-        if (connection == null) {
-            MessageBox.Show("Connection is not selected!");
+        Cluster cluster = this.CurrentCluster;
+        if (cluster == null) {
+            MessageBox.Show("Cluster is not selected!");
             return;
         }
 
@@ -474,7 +474,7 @@ public partial class frmMain : Form {
             return;
         }
 
-        MemcachedAccess access = new(connection);
+        MemcachedAccess access = new(cluster);
 
         try {
             Cursor.Current = Cursors.WaitCursor;
@@ -504,7 +504,7 @@ public partial class frmMain : Form {
 
     #region Properties
 
-    private Connection CurrentConnection => cboConnections.SelectedItem as Connection;
+    private Cluster CurrentCluster => cboClusters.SelectedItem as Cluster;
 
     private Server CurrentServer {
         get {            

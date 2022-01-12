@@ -21,17 +21,17 @@ public class Bootstrap {
     public void BuildDb() {
         using var connection = new SqliteConnection(connectionString);
 
-        // Memcached Connections Table
-        const string TBL_Connections = "Connections";
+        // Memcached Clusters Table
+        const string TBL_Clusters = "Clusters";
         const string TBL_Servers = "Servers";
 
-        var table = connection.Query<string>($"SELECT name FROM sqlite_master WHERE type='table' AND name = '{TBL_Connections}';");
+        var table = connection.Query<string>($"SELECT name FROM sqlite_master WHERE type='table' AND name = '{TBL_Clusters}';");
         if (string.IsNullOrEmpty(table.FirstOrDefault())) {
 
             // no need to specify Id because its automatically provided by the rowid feature of SQLite
             connection.Execute($@"
-                    CREATE TABLE {TBL_Connections} (
-                        ConnectionId INTEGER PRIMARY KEY AUTOINCREMENT,
+                    CREATE TABLE {TBL_Clusters} (
+                        ClusterId INTEGER PRIMARY KEY AUTOINCREMENT,
                         Name VARCHAR(100) NOT NULL
                     );");
         }
@@ -42,25 +42,26 @@ public class Bootstrap {
             // no need to specify Id because its automatically provided by the rowid feature of SQLite
             connection.Execute($@"
                     CREATE TABLE {TBL_Servers} (
+                        ServerId INTEGER PRIMARY KEY AUTOINCREMENT,
                         Address VARCHAR(100) NOT NULL,
                         Port INT NOT NULL,
-                        ConnectionId INT NOT NULL,
-                        FOREIGN KEY(ConnectionId) REFERENCES {TBL_Connections}(ConnectionId)
+                        ClusterId INT NOT NULL,
+                        FOREIGN KEY(ClusterId) REFERENCES {TBL_Clusters}(ClusterId)
                     );");
         }
 
         // insert sample data only if we are in the dev environement and there is no data
-        if (Debugger.IsAttached && connection.ExecuteScalar<bool>($"select count(1) from {TBL_Connections}") == false) {
+        if (Debugger.IsAttached && connection.ExecuteScalar<bool>($"select count(1) from {TBL_Clusters}") == false) {
             // add sample InventoryItem data to the table
-            var lst = new List<Connection> {
-                    new Connection {
+            var lst = new List<Cluster> {
+                    new Cluster {
                         Name = "Dev",
                         Servers = new List<Server> {
                             new Server{ Address = "10.147.31.171", Port = 11211},
                             new Server{ Address = "10.147.31.172", Port = 11211}
                         }
                     },
-                    new Connection {
+                    new Cluster {
                         Name = "Prod",
                         Servers = new List<Server> {
                             new Server{ Address = "10.147.20.50", Port = 11211},
@@ -69,11 +70,11 @@ public class Bootstrap {
                     }
                 };
 
-            foreach (var memcachedConnection in lst) {
-                long connectionId = connection.Insert<Connection>(memcachedConnection);
+            foreach (var memcachedCluster in lst) {
+                long clusterId = connection.Insert<Cluster>(memcachedCluster);
 
-                foreach (var server in memcachedConnection.Servers) {
-                    server.ConnectionId = (int) connectionId;
+                foreach (var server in memcachedCluster.Servers) {
+                    server.ClusterId = (int) clusterId;
                     connection.Insert<Server>(server);
                 }
             }

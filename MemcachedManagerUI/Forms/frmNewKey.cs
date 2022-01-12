@@ -12,14 +12,20 @@ public partial class frmNewKey : Form {
     private void btnOK_Click(object sender, EventArgs e) {
         if (string.IsNullOrWhiteSpace(txtKeyName.Text)) {
             this.DialogResult = DialogResult.None;
+            MessageBox.Show("Enter key name");
+            return;
         }
 
         if (string.IsNullOrWhiteSpace(txtKeyValue.Text)) {
             this.DialogResult = DialogResult.None;
+            MessageBox.Show("Enter key value");
+            return;
         }
 
         if (txtCacheInSeconds.Value < 0) {
             this.DialogResult = DialogResult.None;
+            MessageBox.Show("Enter cache in seconds");
+            return;
         }
     }
 

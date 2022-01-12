@@ -26,12 +26,12 @@ namespace MemcachedManager.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastConnection {
+        public string LastCluster {
             get {
-                return ((string)(this["LastConnection"]));
+                return ((string)(this["LastCluster"]));
             }
             set {
-                this["LastConnection"] = value;
+                this["LastCluster"] = value;
             }
         }
         
