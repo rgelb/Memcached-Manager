@@ -15,7 +15,7 @@ The app is in workable state, but needs a lot of polish.  To use, run solution, 
 
 ## Dependencies
 
-The application requires [].NET 6 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.1-windows-x64-installer).
+The application requires [.NET 6 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.1-windows-x64-installer).
 
 ## Demo
 
